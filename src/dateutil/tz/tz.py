@@ -1263,12 +1263,14 @@ class tzical(object):
     """
     def __init__(self, fileobj):
         global rrule
+        import io  # 2026-10-09: Read files with an explicit iCalendar charset.
+
         from dateutil import rrule
 
         if isinstance(fileobj, string_types):
             self._s = fileobj
-            # ical should be encoded in UTF-8 with CRLF
-            fileobj = open(fileobj, 'r')
+            # 2026-10-09: iCalendar uses UTF-8 independently of the locale.
+            fileobj = io.open(fileobj, "r", encoding="utf-8")
         else:
             self._s = getattr(fileobj, 'name', repr(fileobj))
             fileobj = _nullcontext(fileobj)
