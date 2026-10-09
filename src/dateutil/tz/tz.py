@@ -1207,7 +1207,8 @@ class _tzicalvtz(_tzinfo):
                     lastcomp = comp
                     break
             else:
-                lastcomp = comp[0]
+                # 2026-10-09: Fall back to the first stored observance.
+                lastcomp = self._comps[0]
 
         with self._cache_lock:
             self._cachedate.insert(0, (dt, self._fold(dt)))
